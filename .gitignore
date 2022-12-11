@@ -1,0 +1,13 @@
+# Idea
+/.idea
+*.iml
+
+wheels/
+dist
+*.egg-info/
+*.egg
+
+# Unit test / coverage reports
+.pytest_cache/
+
+lexicon/

@@ -1,0 +1,3 @@
+[submodule "libs/dns-lexicon"]
+	path = libs/dns-lexicon
+	url = https://github.com/AnalogJ/lexicon.git
