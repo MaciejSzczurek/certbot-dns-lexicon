@@ -57,7 +57,7 @@ class _LexiconClient(LexiconClient):
             )
         except ModuleNotFoundError:
             module = importlib.import_module(
-                f"certbot_dns_lexicon._internal.lexicon.providers.{config['provider_name']}"
+                f"certbot_dns_lexicon.lexicon.providers.{config['provider_name']}"
             )
 
         provider_class = getattr(module, "Provider")
