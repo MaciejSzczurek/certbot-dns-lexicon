@@ -53,7 +53,7 @@ class _LexiconClient(LexiconClient):
 
         try:
             module = importlib.import_module(
-                f"lexicon.providers.{config['provider_name']}"
+                f"lexicon._private.providers.{config['provider_name']}"
             )
         except ModuleNotFoundError:
             module = importlib.import_module(

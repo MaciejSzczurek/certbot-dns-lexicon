@@ -7,7 +7,7 @@ from requests import Session, Response
 
 from lexicon.config import ConfigResolver
 from lexicon.exceptions import AuthenticationError
-from lexicon.providers.base import Provider as BaseProvider
+from lexicon.interfaces import Provider as BaseProvider
 
 
 class Provider(BaseProvider):
