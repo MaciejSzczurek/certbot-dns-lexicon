@@ -1,3 +1,5 @@
+from argparse import ArgumentParser
+from re import Pattern
 from typing import Optional, List, Dict, Union, Final
 
 import requests
@@ -29,7 +31,7 @@ class Provider(BaseProvider):
         self.session: Optional[Session] = None
         self.zone_url: Optional[str] = None
 
-    def _authenticate(self) -> None:
+    def authenticate(self) -> None:
         self.session = requests.Session()
 
         soup = BeautifulSoup(self._get("/login").content, self.HTML_PARSER)
@@ -54,18 +56,18 @@ class Provider(BaseProvider):
 
         self.domain_id = self.domain
 
-    def _create_record(self, rtype: str, name: str, content: str) -> bool:
+    def create_record(self, rtype: str, name: str, content: str) -> bool:
         ttl = self._get_lexicon_option("ttl")
         soup = BeautifulSoup(self._get(self.zone_url).content, self.HTML_PARSER)
         form = soup.select_one(
             "div.card-box:nth-child(3) > div:nth-child(2) > form:nth-child(1)"
         )
 
-        for record in self._list_records(rtype, name, content):
+        for record in self.list_records(rtype, name, content):
             if (
-                    record["type"] == rtype
-                    and self._relative_name(record["name"]) == self._relative_name(name)
-                    and record["content"] == content
+                record["type"] == rtype
+                and self._relative_name(record["name"]) == self._relative_name(name)
+                and record["content"] == content
             ):
                 return True
 
@@ -86,7 +88,16 @@ class Provider(BaseProvider):
 
         return True
 
-    def _update_record(
+    @staticmethod
+    def get_nameservers() -> Union[List[str], List[Pattern]]:
+        return ["seohost.pl"]
+
+    @staticmethod
+    def configure_parser(parser: ArgumentParser) -> None:
+        parser.add_argument("--auth_email", help="specify user e-mail")
+        parser.add_argument("--auth_password", help="specify user password")
+
+    def update_record(
         self,
         identifier: Optional[str] = None,
         rtype: Optional[str] = None,
@@ -100,11 +111,11 @@ class Provider(BaseProvider):
         )
 
         if not identifier:
-            records = self._list_records(rtype, name)
+            records = self.list_records(rtype, name)
         else:
             records = [
                 record
-                for record in self._list_records()
+                for record in self.list_records()
                 if "id" in record and record["id"] == identifier
             ]
 
@@ -131,7 +142,7 @@ class Provider(BaseProvider):
 
         return True
 
-    def _delete_record(
+    def delete_record(
         self,
         identifier: Optional[str] = None,
         rtype: Optional[str] = None,
@@ -142,7 +153,7 @@ class Provider(BaseProvider):
         if not identifier:
             delete_records_id = [
                 record["id"]
-                for record in self._list_records(rtype, name, content)
+                for record in self.list_records(rtype, name, content)
                 if "id" in record
             ]
         else:
@@ -157,7 +168,7 @@ class Provider(BaseProvider):
 
         return True
 
-    def _list_records(
+    def list_records(
         self,
         rtype: Optional[str] = None,
         name: Optional[str] = None,
