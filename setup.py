@@ -7,7 +7,7 @@ setup(
     python_requires=">=3.10",
     packages=find_packages(exclude=["lexicon", "lexicon.*"]),
     install_requires=[
-        "certbot==2.7.2",
+        "certbot==2.7.3",
         "PyYAML==6.0",
         "dns-lexicon==3.16.1",
         "beautifulsoup4==4.12.2",
