@@ -10,7 +10,7 @@ setup(
         "certbot==2.8.0",
         "PyYAML==6.0.1",
         "dns-lexicon==3.17.0",
-        "beautifulsoup4==4.12.2",
+        "beautifulsoup4==4.12.3",
         "requests==2.31.0",
     ],
     classifiers=[
