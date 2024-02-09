@@ -2,8 +2,9 @@ on:
   workflow_dispatch:
   push:
     tags: ['*']
+
 jobs:
-  build-whl-file:
+  create-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,8 +17,9 @@ jobs:
         run: |
           pip install -r requirements-dev.txt
           python -m build
-      - name: Upload whl file
-        uses: actions/upload-artifact@v4
+      - name: Move whl to release directory
+        run: mkdir to-release && mv dist/certbot_dns_lexicon-*.whl to-release/
+      - name: Create release draft
+        uses: MaciejSzczurek/release-action@main
         with:
-          name: certbot-dns-lexicon
-          path: dist/certbot_dns_lexicon-*.whl
+          assets-directory: to-release
