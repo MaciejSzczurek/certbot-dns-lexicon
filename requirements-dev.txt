@@ -1,4 +1,4 @@
 build==1.2.1
 pytest==8.2.1
-ruff==0.4.5
+ruff==0.4.6
 vcrpy==4.2.1
