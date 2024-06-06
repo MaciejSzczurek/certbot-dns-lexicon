@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="certbot-dns-lexicon",
-    version="1.0.36",
+    version="1.0.37",
     author="Maciej Szczurek",
     python_requires=">=3.10",
     packages=find_packages(exclude=["lexicon", "lexicon.*"]),
