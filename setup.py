@@ -9,7 +9,7 @@ setup(
     install_requires=[
         "certbot==3.0.1",
         "PyYAML==6.0.2",
-        "dns-lexicon==3.19.0",
+        "dns-lexicon==3.20.0",
         "beautifulsoup4==4.12.3",
         "requests==2.32.3",
     ],
