@@ -45,7 +45,7 @@ class Provider(BaseProvider):
         )
 
         zones = BeautifulSoup(self._get("/dns").content, self.HTML_PARSER).select(
-            "#dns-table tr > td > a:nth-child(1)"
+            "#content tbody tr > td:nth-child(1) > a"
         )
         if self.domain not in {domain.text for domain in zones}:
             raise AuthenticationError(f"Domain {self.domain} is not found")
@@ -60,7 +60,7 @@ class Provider(BaseProvider):
         ttl = self._get_lexicon_option("ttl")
         soup = BeautifulSoup(self._get(self.zone_url).content, self.HTML_PARSER)
         form = soup.select_one(
-            "div.card-box:nth-child(3) > div:nth-child(2) > form:nth-child(1)"
+            "#content > form[action$='/records']"
         )
 
         for record in self.list_records(rtype, name, content):
@@ -75,9 +75,6 @@ class Provider(BaseProvider):
             form.attrs["action"],
             {
                 "_token": form.select_one(self.TOKEN_SELECTOR)["value"],
-                "dns_id": form.select_one("input[name='dns_id']")["value"],
-                "domain": form.select_one("input[name='domain']")["value"],
-                "user_id": form.select_one("input[name='user_id']")["value"],
                 "record_type": rtype,
                 "record_name": self._full_name(name),
                 "record_prio": "0",
@@ -107,7 +104,7 @@ class Provider(BaseProvider):
         ttl = self._get_lexicon_option("ttl")
         soup = BeautifulSoup(self._get(self.zone_url).content, self.HTML_PARSER)
         form = soup.select_one(
-            "div.card-box:nth-child(3) > div:nth-child(2) > form:nth-child(1)"
+            "#content > form[action$='/records']"
         )
 
         if not identifier:
@@ -178,7 +175,7 @@ class Provider(BaseProvider):
             record.select("td")
             for record in BeautifulSoup(
                 self._get(self.zone_url).content, self.HTML_PARSER
-            ).select(".table tr")
+            ).select("table tbody tr:not(.only-mobile)")
         ][1:]
         records: list[dict] = []
         for record in records_table:
