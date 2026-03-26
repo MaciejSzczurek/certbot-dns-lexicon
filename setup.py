@@ -11,7 +11,7 @@ setup(
         "PyYAML==6.0.3",
         "dns-lexicon==3.23.2",
         "beautifulsoup4==4.14.3",
-        "requests==2.32.5",
+        "requests==2.33.0",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
